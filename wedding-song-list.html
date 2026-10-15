@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Patrick & Becky's Wedding Music</title>
+<style>
+:root{--bg:#f6f1ec;--card:#fffdfb;--ink:#2e2926;--muted:#756b65;--wine:#8a4b61;--gold:#c2a168;--line:#eadfd7}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(145deg,#faf7f3,var(--bg));color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}.wrap{max-width:1200px;margin:auto;padding:34px 18px 60px}header{text-align:center;padding:24px 12px 30px}h1{font-family:Georgia,serif;font-size:clamp(32px,6vw,58px);margin:0;color:#513744;font-weight:500}header p{color:var(--muted);margin:9px auto 0;max-width:690px}.toolbar{position:sticky;top:0;z-index:5;background:#f6f1ecee;backdrop-filter:blur(12px);padding:12px 0;border-bottom:1px solid var(--line);display:flex;gap:8px;flex-wrap:wrap}.toolbar input{flex:1;min-width:210px;border:1px solid var(--line);border-radius:999px;padding:11px 17px;background:white;font:inherit}.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 13px;cursor:pointer}.chip.active{background:var(--wine);color:white;border-color:var(--wine)}.count{margin:18px 2px;color:var(--muted)}.section{margin-top:32px}.section h2{font:500 25px Georgia,serif;color:#5b3f4b;border-bottom:1px solid var(--line);padding-bottom:9px}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 8px 25px #806c5c12}.media{aspect-ratio:16/9;background:#ddd;position:relative}.media img{width:100%;height:100%;object-fit:cover;display:block}.play{position:absolute;inset:0;border:0;background:linear-gradient(transparent 50%,#0007);cursor:pointer;color:white;display:flex;align-items:center;justify-content:center}.play span{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:#b84355e8;font-size:23px;box-shadow:0 4px 18px #0004}.media iframe{width:100%;height:100%;border:0}.body{padding:15px}.title{font-weight:750;font-size:17px}.artist{color:var(--wine);margin-top:2px}.desc{color:var(--muted);font-size:13px;margin-top:9px;min-height:40px}.actions{display:flex;gap:8px;margin-top:13px}.actions a,.stop{flex:1;text-align:center;text-decoration:none;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:8px;background:white;font:inherit;cursor:pointer}.badge{display:inline-block;font-size:11px;color:#72593b;background:#f3e7cf;padding:2px 7px;border-radius:99px;margin-top:9px}.empty{text-align:center;color:var(--muted);padding:50px}footer{text-align:center;color:var(--muted);margin-top:44px;font-size:12px}@media(max-width:600px){.wrap{padding:18px 14px 50px}.toolbar{top:0}.grid{grid-template-columns:1fr}}
+</style>
+</head><body><div class="wrap"><header><h1>Wedding Music Collection</h1><p>A warm, elegant collection for welcoming, dining, toasting and farewell. Tap a thumbnail to play from YouTube.</p></header><div class="toolbar"><input id="q" placeholder="Search song, artist or mood…"><button class="chip active" data-filter="all">All</button><button class="chip" data-filter="Instrumental">Instrumental</button><button class="chip" data-filter="Vocal">Vocal</button></div><div class="count" id="count"></div><main id="app"></main><footer>Playback availability depends on YouTube embedding permissions and local region restrictions.</footer></div>
+<script>
+const S=[
+['Instrumental','Modern neoclassical & soundtrack','Ludovico Einaudi','Nuvole Bianche','Flowing, pure contemporary piano; cinematic and romantic.','sR2W2scFS4Y'],
+['Instrumental','Modern neoclassical & soundtrack','Yiruma','Passing By','Warm, healing piano with a gentle understated melody.','m2uIbyraXQ8'],
+['Instrumental','Modern neoclassical & soundtrack','Craig Armstrong','Glasgow Love Theme','A concise, deeply romantic theme from Love Actually.','JugSYVc_ASc'],
+['Instrumental','Modern neoclassical & soundtrack','Stephan Moccio','Fracture','Tender, very slow contemporary solo piano.','hjGA3aAjf70'],
+['Instrumental','Modern neoclassical & soundtrack','The Piano Guys','A Thousand Years','Cello and piano arrangement with a recognisable emotional climax.','QgaTQ5-XfMM'],
+['Instrumental','Modern neoclassical & soundtrack','Jon Schmidt','Love Story Meets Viva La Vida','A buoyant yet refined piano-and-cello mashup.','zkQqXO_OFYY'],
+['Instrumental','Modern neoclassical & soundtrack','Brooklyn Duo','Love Me Like You Do','A soft cello-and-piano transformation of the pop original.','Sx3WV9GSOmc'],
+['Instrumental','Modern neoclassical & soundtrack','Vitamin String Quartet','thank u, next','Bridgerton-style strings with a highly recognisable modern melody.','AB1T-68mes0'],
+['Instrumental','Modern neoclassical & soundtrack','Paul Hankinson Covers','Hallelujah (Violin & Piano Wedding Version)','A wedding-focused violin and piano reading of the classic.',null],
+['Instrumental','Modern neoclassical & soundtrack','Duomo','Wildest Dreams','Romantic classical strings familiar from Bridgerton.',null],
+['Instrumental','Classical favourites','Claude Debussy','Clair de Lune','Poetic, moonlit and one of the most romantic piano classics.',null],
+['Instrumental','Classical favourites','J.S. Bach','Air on the G String','Serene, ceremonial and warmly recognisable.',null],
+['Instrumental','Classical favourites','Edward Elgar',"Salut d'Amour",'An intimate violin love token composed for Elgar’s wife.',null],
+['Instrumental','Classical favourites','Camille Saint-Saëns','The Swan','Graceful slow cello music for elegant dining.',null],
+['Instrumental','Classical favourites','Franz Schubert','Ave Maria (Piano Version)','Pure, calm and reflective piano.',null],
+['Instrumental','Light contemporary instrumental','Joseph Sullinger','(They Long to Be) Close to You','Light solo acoustic guitar interpretation.',null],
+['Instrumental','Light contemporary instrumental','Cody Fry','Photograph (Instrumental)','Bright orchestral colour with a nostalgic afternoon glow.',null],
+['Instrumental','Light contemporary instrumental','Govi','Andalusia','Gentle flamenco guitar with relaxed destination-wedding energy.',null],
+['Instrumental','Light contemporary instrumental','Beegie Adair','The Way You Look Tonight','Elegant, relaxed romantic jazz piano.',null],
+['Instrumental','Light contemporary instrumental','Daniel Ho','Along for the Ride','Breezy ukulele with an easy sense of happiness.',null],
+['Instrumental','Light contemporary instrumental','Acoustic Guitar Collective','Heaven','A bright dual-guitar rendering of the Bryan Adams classic.',null],
+['Instrumental','Light contemporary instrumental','Laura Sullivan','You Are the Reason (Piano Version)','Familiar melody presented with intimate restraint.',null],
+['Instrumental','Light contemporary instrumental','Alexis Ffrench','Bluebird','Hopeful modern piano and light strings.',null],
+['Instrumental','Light contemporary instrumental','Helen Jane Long','Expression','Fluid modern piano that supports lively table conversation.',null],
+['Instrumental','Light contemporary instrumental','Brian Crain','Butterfly Waltz','A fairy-tale three-beat waltz, delicate and uplifting.',null],
+['Vocal','Romantic slow & warm','Kina Grannis',"Can't Help Falling In Love",'The especially gentle wedding version heard in Crazy Rich Asians.',null],
+['Vocal','Romantic slow & warm','Sleeping At Last','Turning Page','Breathy piano-led wedding song from The Twilight Saga.',null],
+['Vocal','Romantic slow & warm','Ruelle','I Get to Love You','Tender independent pop with an emotional, wedding-ready chorus.',null],
+['Vocal','Romantic slow & warm','Haley Reinhart',"Can't Take My Eyes Off You (Acoustic)",'A close, unhurried acoustic reinterpretation.',null],
+['Vocal','Romantic slow & warm','Aqualung','Brighter Than Sunshine','Warm and recognisable without becoming overpowering.',null],
+['Vocal','Romantic slow & warm','Ingrid Michaelson','The Way I Am','Small-scale, sincere guitar folk with a playful warmth.',null],
+['Vocal','Romantic slow & warm','Iron & Wine','Flightless Bird, American Mouth','Literary, swaying folk with a soft embrace.',null],
+['Vocal','Romantic slow & warm','Aidan Martin','Easy','Gentle piano and close male vocal.',null],
+['Vocal','Romantic slow & warm','Gavin James','Always (Acoustic)','Clear male vocal and an immediately memorable chorus.',null],
+['Vocal','Romantic slow & warm','Lady A','Golden (Acoustic)','A glowing, country-tinged acoustic ballad.',null],
+['Vocal','Light & lively','Hollow Coves','Moments','Sunny, forest-fresh folk with a soft rhythmic lift.',null],
+['Vocal','Light & lively','The Paper Kites','Bloom','Romantic indie folk built around beautiful fingerpicked guitar.',null],
+['Vocal','Light & lively','Jason Mraz & Colbie Caillat','Lucky','A relaxed, affectionate wedding duet.',null],
+['Vocal','Light & lively','Boyce Avenue feat. Hannah Trigwell','We Found Love','A gentle acoustic duet recasting the Rihanna hit.',null],
+['Vocal','Light & lively','Imaginary Future','Here Comes the Sun','A soft acoustic cover of The Beatles classic.',null],
+['Vocal','Light & lively','Ben Rector','Brand New','Joyful piano-and-guitar pop that remains wedding-friendly.',null],
+['Vocal','Light & lively','Daniela Andrade','Crazy in Love','A stylish, jazz-inflected slow cover of Beyoncé.',null],
+['Vocal','Light & lively','Grover Washington Jr. feat. Bill Withers','Just the Two of Us','Classic, smooth jazz/R&B with effortless recognition.',null],
+['Vocal','Light & lively','Colbie Caillat','I Do','Sunny, beachy pop with perfectly on-theme lyrics.',null],
+['Vocal','Light & lively','Emily Hackett feat. Will Anderson','Take My Hand (The Wedding Song)','A buoyant modern wedding song.',null],
+['Vocal','Light & lively','Sara Bareilles','I Choose You','Fresh, dance-like pop suited to the later reception.',null],
+['Vocal','Light & lively','Jack Johnson','Better Together','Easy acoustic surf-folk with a warm hook.',null],
+['Vocal','Light & lively','Lauv','I Like Me Better (Acoustic Version)','A softer acoustic reading with high recognition.',null],
+['Vocal','Light & lively','Ellie Goulding','How Long Will I Love You','Warm, thankful and cinematic, from About Time.',null],
+['Vocal','Light & lively','Matt Johnson',"You're Gonna Live Forever in Me",'Gentle piano and whistling, ideal for a warm farewell.',null]
+];
+let filter='all'; const app=document.querySelector('#app'), q=document.querySelector('#q');
+const esc=s=>s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const query=s=>encodeURIComponent(`${s[2]} ${s[3]} official audio`);
+function render(){let term=q.value.toLowerCase().trim(), rows=S.filter(s=>(filter==='all'||s[0]===filter)&&s.join(' ').toLowerCase().includes(term));document.querySelector('#count').textContent=`${rows.length} of ${S.length} songs`;
+let groups=[...new Set(rows.map(s=>s[1]))];app.innerHTML=groups.map(g=>`<section class="section"><h2>${esc(g)}</h2><div class="grid">${rows.filter(s=>s[1]===g).map((s,i)=>card(s,i)).join('')}</div></section>`).join('')||'<div class="empty">No matching songs.</div>'}
+function card(s,i){let id=s[5], thumb=id?`https://i.ytimg.com/vi/${id}/hqdefault.jpg`:`https://i.ytimg.com/vi/0.jpg`;let y=id?`https://www.youtube.com/watch?v=${id}`:`https://www.youtube.com/results?search_query=${query(s)}`;return `<article class="card"><div class="media" id="m-${slug(s)}">${id?`<img loading="lazy" src="${thumb}" alt="YouTube thumbnail for ${esc(s[3])}"><button class="play" onclick="play('${slug(s)}','${id}')" aria-label="Play ${esc(s[3])}"><span>▶</span></button>`:`<div style="height:100%;display:grid;place-items:center;background:linear-gradient(135deg,#5d3b4d,#b27775);color:white;text-align:center;padding:20px"><b>${esc(s[3])}</b></div>`}</div><div class="body"><div class="title">${esc(s[3])}</div><div class="artist">${esc(s[2])}</div><span class="badge">${id?'Direct match verified':'Exact YouTube search'}</span><div class="desc">${esc(s[4])}</div><div class="actions"><a href="${y}" target="_blank" rel="noopener">Open in YouTube</a></div></div></article>`}
+function slug(s){return btoa(unescape(encodeURIComponent(s[2]+s[3]))).replace(/[^a-z0-9]/gi,'').slice(0,18)}
+window.play=(key,id)=>{document.querySelectorAll('.media iframe').forEach(x=>{x.parentElement.innerHTML=x.parentElement.dataset.old||''});let m=document.querySelector('#m-'+key);m.dataset.old=m.innerHTML;m.innerHTML=`<iframe allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0"></iframe>`}
+q.addEventListener('input',render);document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));b.classList.add('active');filter=b.dataset.filter;render()});render();
+</script></body></html>
